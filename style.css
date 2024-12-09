@@ -1,7 +1,12 @@
-body {
+* {
     margin: 0;
-    overflow: hidden;
-    background-color: #87CEEB; /* Céu claro */
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #87CEEB;
 }
 
 #game-container {
@@ -9,9 +14,11 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: url('cenario.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 canvas {
     border: 2px solid #000;
-    background: #7CFC00; /* Grama */
+    display: block;
 }
