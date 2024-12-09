@@ -1,139 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo do Dinossauro</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
-        #gameCanvas {
-            background: #87CEEB;
-            display: block;
-            margin: 0 auto;
-        }
-        button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ff6347;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Brasil Surfers</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
-    <button id="restartBtn">Reiniciar</button>
-
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const restartBtn = document.getElementById('restartBtn');
-
-        let dino = { x: 50, y: 300, width: 20, height: 30, speedY: 0, gravity: 0.8, jumpPower: -15 };
-        let obstacles = [];
-        let gameOver = false;
-
-        // Função para gerar obstáculos
-        function generateObstacle() {
-            let obsHeight = Math.floor(Math.random() * 20) + 20;
-            let obs = { x: canvas.width, y: 300 - obsHeight, width: 20, height: obsHeight, speedX: -4 };
-            obstacles.push(obs);
-        }
-
-        // Função de reiniciar o jogo
-        function restartGame() {
-            gameOver = false;
-            dino.y = 300;
-            dino.speedY = 0;
-            obstacles = [];
-            restartBtn.style.display = 'none';
-            loop();
-        }
-
-        // Função de atualizar o estado do jogo
-        function update() {
-            if (!gameOver) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Atualizar dinossauro
-                dino.speedY += dino.gravity;
-                dino.y += dino.speedY;
-                if (dino.y > 300) {
-                    dino.y = 300;
-                    dino.speedY = 0;
-                }
-
-                // Atualizar obstáculos
-                obstacles.forEach((obs, index) => {
-                    obs.x += obs.speedX;
-                    if (obs.x + obs.width < 0) {
-                        obstacles.splice(index, 1);
-                    }
-
-                    // Colisão com o dinossauro
-                    if (dino.x < obs.x + obs.width && dino.x + dino.width > obs.x && dino.y + dino.height > obs.y) {
-                        gameOver = true;
-                        restartBtn.style.display = 'block';
-                    }
-                });
-
-                // Gerar novos obstáculos
-                if (Math.random() < 0.01) {
-                    generateObstacle();
-                }
-
-                // Desenhar dinossauro
-                ctx.fillStyle = 'green';
-                ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
-
-                // Desenhar obstáculos
-                ctx.fillStyle = 'black';
-                obstacles.forEach(obs => {
-                    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
-                });
-
-                // Atualizar a tela
-                requestAnimationFrame(update);
-            }
-        }
-
-        // Função para o pulo do dinossauro
-        function jump() {
-            if (dino.y === 300) {
-                dino.speedY = dino.jumpPower;
-            }
-        }
-
-        // Adiciona controle por toque
-        canvas.addEventListener('touchstart', function(event) {
-            event.preventDefault();
-            jump();
-        });
-
-        // Adiciona controle por deslizar
-        canvas.addEventListener('touchmove', function(event) {
-            event.preventDefault();
-            jump();
-        });
-
-        // Função para iniciar o jogo
-        function loop() {
-            if (!gameOver) {
-                update();
-            }
-        }
-
-        restartBtn.addEventListener('click', restartGame);
-
-        // Inicia o jogo
-        loop();
-    </script>
+    <div id="gameArea">
+        <div id="dino"></div>
+        <div id="police"></div>
+        <div id="meteor"></div>
+        <div id="score">Pontuação: 0</div>
+        <div id="gameOver" style="display: none;">
+            <h2>Você foi extinto!</h2>
+            <button id="restartBtn">Reiniciar</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
